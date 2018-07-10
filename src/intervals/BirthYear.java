@@ -1,10 +1,46 @@
 package intervals;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class BirthYear {
+
+
+    public int solution(String S) {
+        // write your code in Java SE 8
+        int sum = 0;
+        for(int i = 0; i < S.length(); i++) {
+            sum +=getLen(S.substring(i, S.length()), "", 0);
+        }
+        return sum;
+    }
+
+    public int getLen(String S, String seq, int count) {
+        if(count == S.length())
+                return getUniqueCharLeng(seq);
+        return getUniqueCharLeng(seq) +
+                getLen(S, seq+S.charAt(count), count+1);
+    }
+
+    /**
+     * Gets the length of unique letters in this sequence
+     */
+    private int getUniqueCharLeng(String s) {
+        if(s.length() == 1) {
+            return 1;
+        } else {
+            int count = 0;
+            Map<Character, Integer> map = new HashMap<>();
+            for(int i = 0; i < s.length(); i++) {
+                map.merge(s.charAt(i), 1, (x, y)-> x+y);
+            }
+            for(Character c : map.keySet()) {
+                if(map.get(c) == 1)
+                    count++;
+            }
+            return count;
+        }
+    }
+
 
     /**
      * Find the year with highest population
